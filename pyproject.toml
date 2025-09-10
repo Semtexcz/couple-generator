@@ -1,0 +1,19 @@
+[project]
+name = "couple-generator"
+version = "0.1.0"
+description = "CLI tool for generating random couples from CSV file"
+authors = [
+    { name = "Daniel Kopecký", email = "kopecky.d@gmail.com" }
+]
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "click >=8.2.1,<9.0.0"
+]
+
+[project.scripts]
+couple-generator = "couple_generator.cli:main"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
