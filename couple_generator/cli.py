@@ -23,23 +23,37 @@ def vytvor_dvojice(seznam):
     posledni = seznam[-1] if len(seznam) % 2 == 1 else None
     return dvojice, posledni
 
+def vytvor_asymetricke_prirazeni(seznam):
+    """Každý dostane někoho jiného, ale ne sebe a ne symetricky."""
+    while True:
+        prirazeni = seznam[:]  # kopie
+        random.shuffle(prirazeni)
+        # zajistíme, že nikdo nedostane sebe
+        if all(a != b for a, b in zip(seznam, prirazeni)):
+            return list(zip(seznam, prirazeni))
+
 @click.command()
 @click.argument("csv_soubor", type=click.Path(exists=True))
-def main(csv_soubor):
-    """Vytvoří náhodné dvojice ze seznamu jmen v CSV souboru."""
+@click.option("--asym", is_flag=True, help="Vytvoří asymetrické dvojice (každý někoho opravuje).")
+def main(csv_soubor, asym):
+    """Vytvoří náhodné dvojice nebo asymetrické přiřazení ze seznamu jmen v CSV souboru."""
     jmena = nacti_jmena(csv_soubor)
     if not jmena:
         click.echo("Soubor je prázdný nebo neobsahuje platná jména.")
         return
 
-    dvojice, posledni = vytvor_dvojice(jmena)
-
-    click.echo("Dvojice:")
-    for d in dvojice:
-        click.echo(f"- {d[0]} & {d[1]}")
-
-    if posledni:
-        click.echo(f"Zůstal sám: {posledni}")
+    if asym:
+        prirazeni = vytvor_asymetricke_prirazeni(jmena)
+        click.echo("Asymetrické přiřazení:")
+        for a, b in prirazeni:
+            click.echo(f"- {a} opravuje {b}")
+    else:
+        dvojice, posledni = vytvor_dvojice(jmena)
+        click.echo("Dvojice:")
+        for d in dvojice:
+            click.echo(f"- {d[0]} & {d[1]}")
+        if posledni:
+            click.echo(f"Zůstal sám: {posledni}")
 
 if __name__ == "__main__":
     main()

@@ -1,6 +1,6 @@
 [project]
 name = "couple-generator"
-version = "0.1.0"
+version = "0.2.0"
 description = "CLI tool for generating random couples from CSV file"
 authors = [
     { name = "Daniel Kopecký", email = "kopecky.d@gmail.com" }
